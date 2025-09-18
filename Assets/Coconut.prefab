@@ -106,7 +106,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -124,4 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9186e64271152e54b8bfad01dbfedf2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Coconut
-  factory: {fileID: 0}
+  factory: {fileID: 996706052740937851, guid: b0222ada223e9f646a1cca9bb526fc4c, type: 3}
+  respawn: {fileID: 2256759100812846275, guid: 386f554abb22c824cb4c72d0fafa2527, type: 3}
