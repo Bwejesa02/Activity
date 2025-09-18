@@ -3,34 +3,51 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    float playerSpeed = 5.0f;
-    float jumpHeight = 1.5f;
-    float gravityValue = -9.81f;
+    public float speed = 5.0f;
+    public float jumpHeight = 1.5f;
+    public float gravity = -9.81f;
 
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
+    public InputActionReference moveAction;
+    public InputActionReference jumpAction;
 
-    public InputActionReference moveAction; 
-    public InputActionReference jumpAction; 
+    private CharacterController controller;
+    private Vector3 velocity;
+    private bool isGrounded;
 
-    public CharacterController CharacterController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CharacterController = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
+        jumpAction.action.performed += OnJump;
     }
 
-    // Update is called once per frame
+    void OnDestroy()
+    {
+        jumpAction.action.performed -= OnJump;
+    }
+
     void Update()
     {
-        CharacterController.Move (playerVelocity * Time.deltaTime);
+        isGrounded = controller.isGrounded;
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        Vector2 input = moveAction.action.ReadValue<Vector2>();
+        Vector3 move = new Vector3(input.x, 0, input.y);
+        move = transform.TransformDirection(move);
+
+        controller.Move(move * speed * Time.deltaTime);
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnJump(InputAction.CallbackContext context)
     {
-        if (CharacterController != null)
+        if (isGrounded)
         {
-
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 }
